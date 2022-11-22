@@ -1,0 +1,28 @@
+<main class="text-center container">
+  <form (submit)='signUp()' class="form-signin w-100 m-auto">
+    <!-- <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+    <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+
+    <div class="form-floating mt-1">
+      <input [(ngModel)]="name" type="name" name="name" class="form-control" id="nameInput" placeholder="Anton">
+      <label for="nameInput">Name</label>
+    </div>
+
+    <div class="form-floating mt-1">
+      <input [(ngModel)]="login" type="login" name="login" class="form-control" id="loginInput" placeholder="antosha">
+      <label for="loginInput">Login</label>
+    </div>
+
+    <div class="form-floating mt-1">
+      <input [(ngModel)]="email" type="email" name="email" class="form-control" id="emailInput" placeholder="name@example.com">
+      <label for="emailInput">Email address</label>
+    </div>
+
+    <div class="form-floating mt-1">
+      <input [(ngModel)]="password" type="password" name="password" class="form-control" id="passwordInput" placeholder="Password">
+      <label for="passwordInput">Password</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Sign up</button>
+  </form>
+</main>
