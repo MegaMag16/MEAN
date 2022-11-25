@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  front-end:
+    build: 
+      context: ./front-end
+      dockerfile: Dockerfile.prod
+    container_name: mean-docker-front-end
+    command: ng serve --host 0.0.0.0 --disable-host-check true
+    restart: unless-stopped
+    ports:
+     - "4200:4200"
+    depends_on:
+      - app
+    networks:
+       - mean-docker-network
+
+
+  app:
+    build: ./App
+    container_name: mean-docker-app
+    command: npm run start
+    restart: unless-stopped
+    ports:
+     - "3000:3000"
+    environment:
+      PORT: 3000
+      MONGO_URL: mongodb+srv://hall:1111@cluster0.najih36.mongodb.net/?retryWrites=true&w=majority
+    networks:
+       - mean-docker-network
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: mean-docker-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - front-end
+      - app
+    networks:
+       - mean-docker-network
+
+networks:
+  mean-docker-network:
+    driver: bridge

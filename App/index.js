@@ -10,17 +10,9 @@ const Post = require('./models/post')
 
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT;
 
 app.use(passport.initialize());
-//app.use(passport.session());
-
-/*app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }
-  }));*/
 
 require('./config/passport')(passport);
 
@@ -28,6 +20,12 @@ app.use(cors());
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
+
+const startServer = () => {
+    app.listen(port, () => {
+        console.log("The server was running on the port: " + port)
+    })
+}
 
 mongoose.connect(config.db, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -39,9 +37,10 @@ mongoose.connection.on('error', (err) => {
     console.log("Not successful connection to the database ")
 })
 
-app.listen(port, () => {
-    console.log("The server was running on the port: " + port)
-})
+mongoose.connection.once('open', startServer)
+
+
+
 
 app.get('/', (req, res)=>{
     Post.find().then( posts => res.json(posts))
